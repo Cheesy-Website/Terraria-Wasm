@@ -1,1 +1,56 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"/><link rel="icon" href="./app.ico"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta property="og:title" content="Terrarium"/><meta property="og:description" content="Terraria port for WebAssembly. Play Terraria online in the browser."/><meta name="description" content="Terraria port for WebAssembly. Play Terraria online in the browser."/><link rel="canonical" href="https://terraria.mercurywork.shop"/><title>Terrarium</title><script type="module" crossorigin src="./assets/index.js"></script><link rel="stylesheet" crossorigin href="./assets/index.css"></head><body><div id="app"></div></body></html>
+<!doctype html><html lang="en"><head><meta charset="UTF-8"/><link rel="icon" href="./app.ico"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta property="og:title" content="Terrarium"/><meta property="og:description" content="Terraria port for WebAssembly. Play Terraria online in the browser."/><meta name="description" content="Terraria port for WebAssembly. Play Terraria online in the browser."/><link rel="canonical" href="https://terraria.mercurywork.shop"/><title>Terrarium</title><script type="module" crossorigin src="./assets/index.js"></script><link rel="stylesheet" crossorigin href="./assets/index.css">
+<script>// Window load: initialize cookies
+        window.onload = function() {
+            const cookies = document.cookie.split(';');
+            let userKey = '';
+            let userLink = '';
+            
+            cookies.forEach(cookie => {
+                const [name, value] = cookie.trim().split('=');
+
+                if (name === 'warningEnabled') {
+                    document.getElementById('warning').checked = (value === 'true');
+                }
+                if (name === 'userKey') {
+                    userKey = value;
+                }
+                if (name === 'userLink') {
+                    userLink = value;
+                }
+                if (name === 'Blank') {
+                    document.getElementById('Blank').checked = (value === 'true');
+                }
+            });
+
+            // Panic key functionality
+            document.addEventListener('keydown', function(event) {
+                if (event.key === userKey) {
+                    window.open(userLink, "_blank");
+                }
+            });
+        };
+
+        // Warn on page unload
+        window.onbeforeunload = function() {
+            const cookies = document.cookie.split(';');
+            let warningEnabled = false;
+            cookies.forEach(cookie => {
+                const [name, value] = cookie.trim().split('=');
+                if (name === 'warningEnabled') {
+                    warningEnabled = (value === 'true');
+                }
+            });
+            if (warningEnabled) {
+                return "Are you sure you want to leave this page?";
+            }
+        };
+
+        
+(function() {
+  // Helper: read a cookie by name
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }</script>
+</head><body><div id="app"></div></body></html>

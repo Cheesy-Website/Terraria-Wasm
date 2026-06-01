@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cookie Sync Bridge</title>
+</head>
+<body>
+<script>
+  window.addEventListener('message', (event) => {
+    // 1. Check if the message is the cookie synchronization packet
+    if (event.data && event.data.type === 'SYNC_ALL') {
+      const cookiesToSync = event.data.payload;
+
+      // 2. Loop through every cookie received from the main site
+      for (const [name, value] of Object.entries(cookiesToSync)) {
+        
+        // 3. Write each cookie locally to the Terraria domain
+        // Max-age keeps these settings active for 1 full year (31536000 seconds)
+        // Secure and SameSite=None are mandatory for background syncing to work
+        document.cookie = `${name}=${value}; path=/; max-age=31536000; Secure; SameSite=None`;
+      }
+      
+      console.log('All settings and panic keys synchronized successfully.');
+    }
+  });
+</script>
+</body>
+</html>
